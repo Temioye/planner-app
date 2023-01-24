@@ -18,5 +18,13 @@ $(".taskRow").each(function() {
         }
 });
 
+$(".saveBtn").click(function (event) {
+        event.preventDefault();
+        var value = $(this).siblings(".task").val();
+        var time = $(this).parent().attr("id").split("-")[1];
+        localStorage.setItem(time,value);
+    });
 
+
+    
    
