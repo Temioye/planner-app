@@ -35,4 +35,8 @@ $("#9am .task").val(localStorage.getItem("09"));
     $("#4pm .task").val(localStorage.getItem("16"));
     $("#5pm .task").val(localStorage.getItem("17"));
     
-   
+   $("#clearFieldsBtn").click(function(event) {
+        event.preventDefault;
+        $("textArea").val("");
+        localStorage.clear();
+    });
