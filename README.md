@@ -9,3 +9,9 @@ Javascript app to schedule tasks during working hours.
 AS AN employee with a busy schedule
 I WANT to add important events to a daily planner
 SO THAT I can manage my time effectively
+
+## Screenshot
+
+## link to deployed page
+
+https://temioye.github.io/planner-app/
