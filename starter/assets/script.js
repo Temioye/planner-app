@@ -1,5 +1,13 @@
+
+// $(document).ready(function() {
+//     console.log("Ready!");
+//     });
+
 var today = moment()
 $("#currentDay").text(today.format("dddd MMMM Do"));
+
+// var currentHour = moment().format("HH");
+
 
 $(".taskRow").each(function() {
         var taskRow = $(this).attr("id").split("-")[1];
@@ -18,22 +26,54 @@ $(".taskRow").each(function() {
         }
 });
 
+
+var tasks = {
+    "9am": [],
+    "10am": [],
+    "11am": [],
+    "12pm": [],
+    "1pm": [],
+    "2pm": [],
+    "3pm": [],
+    "4pm": [],
+    "5pm": []
+};
+
+var setTasks = function() {
+    /* add tasks to localStorage */
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+var getTasks = function() {
+    /* load the tasks from localStorage and create tasks in the right row */
+
+    var loadedTasks = JSON.parse(localStorage.getItem("tasks"));
+    if (loadedTasks) {
+        tasks = loadedTasks
+
+        // for each key/value pair in tasks, create a task
+        $.each(tasks, function(hour, task) {
+            var hourDiv = $("#" + hour);
+            createTask(task, hourDiv);
+        })
+    }
+
+    // make sure the past/current/future time is reflected
+    auditTasks()
+}
+
+
 $(".saveBtn").click(function (event) {
         event.preventDefault();
-        var value = $(this).siblings(".task").val();
+        var value = $(this).siblings(".time-block").val();
         var time = $(this).parent().attr("id").split("-")[1];
-        localStorage.setItem(time,value);
+        
     });
 
-$("#9am .task").val(localStorage.getItem("09"));
-    $("#10am .task").val(localStorage.getItem("10"));
-    $("#11am .task").val(localStorage.getItem("11"));
-    $("#12pm .task").val(localStorage.getItem("12"));
-    $("#1pm .task").val(localStorage.getItem("13"));
-    $("#2pm .task").val(localStorage.getItem("14"));
-    $("#3pm .task").val(localStorage.getItem("15"));
-    $("#4pm .task").val(localStorage.getItem("16"));
-    $("#5pm .task").val(localStorage.getItem("17"));
+    
+
+
+      
     
    $("#clearFieldsBtn").click(function(event) {
         event.preventDefault;
