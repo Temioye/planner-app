@@ -1,82 +1,47 @@
-
-// $(document).ready(function() {
-//     console.log("Ready!");
-//     });
-
-var today = moment()
-$("#currentDay").text(today.format("dddd MMMM Do"));
-
-// var currentHour = moment().format("HH");
-
-
-$(".taskRow").each(function() {
-        var taskRow = $(this).attr("id").split("-")[1];
-  
-     if (currentHour == taskRow) {
-            $(this).addClass("present");
-            $(this).children(".description").addClass("present");   
-    
-     } else if (currentHour < taskRow) {
-            $(this).removeClass("present");
-            $(this).addClass("future");
-
-        } else if (currentHour > taskRow) {
-            $(this).removeClass("future");
-            $(this).addClass("past");
-        }
+$(document).ready(function () {
+  console.log("Ready!");
 });
 
+// display current day and date
+var today = moment();
+$("#currentDay").text(today.format("dddd MMMM Do"));
 
-var tasks = {
-    "9am": [],
-    "10am": [],
-    "11am": [],
-    "12pm": [],
-    "1pm": [],
-    "2pm": [],
-    "3pm": [],
-    "4pm": [],
-    "5pm": []
-};
+var currentHour = moment().format("HH");
 
-var setTasks = function() {
-    /* add tasks to localStorage */
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+// add class 'past', 'present' or 'future' based on current hour
+$(".taskRow").each(function () {
+  var taskRow = $(this).attr("id").split("-")[1];
 
-var getTasks = function() {
-    /* load the tasks from localStorage and create tasks in the right row */
+  if (currentHour == taskRow) {
+    $(this).addClass("present");
+  } else if (currentHour < taskRow) {
+    $(this).removeClass("present");
+    $(this).addClass("past");
+  } else if (currentHour > taskRow) {
+    $(this).removeClass("past");
+    $(this).addClass("future");
+  }
+});
 
-    var loadedTasks = JSON.parse(localStorage.getItem("tasks"));
-    if (loadedTasks) {
-        tasks = loadedTasks
+// save input when save button is clicked
+$(".saveBtn").on("click", function () {
+  var taskRow = $(this).parent().attr("id");
+  var taskText = $(this).siblings(".description").val();
+  localStorage.setItem(taskRow, taskText);
+});
 
-        // for each key/value pair in tasks, create a task
-        $.each(tasks, function(hour, task) {
-            var hourDiv = $("#" + hour);
-            createTask(task, hourDiv);
-        })
-    }
+//get item from local storage
+$(".taskRow").each(function () {
+  var currentRowId = $(this).attr("id");
+  var taskText = localStorage.getItem(currentRowId);
+  if (taskText != undefined) {
+    $(this).children(".description").val(taskText);
+  }
+});
 
-    // make sure the past/current/future time is reflected
-    auditTasks()
-}
-
-
-$(".saveBtn").click(function (event) {
-        event.preventDefault();
-        var value = $(this).siblings(".time-block").val();
-        var time = $(this).parent().attr("id").split("-")[1];
-        
-    });
-
-    
-
-
-      
-    
-   $("#clearFieldsBtn").click(function(event) {
-        event.preventDefault;
-        $("textArea").val("");
-        localStorage.clear();
-    });
+//clear items when button is clicked
+$("#clearFieldsBtn").click(function (event) {
+  event.preventDefault;
+  $("textArea").val("");
+  localStorage.clear();
+});
